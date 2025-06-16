@@ -4,25 +4,46 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Entrada;
+use App\Models\Localidad;
 use Illuminate\Support\Facades\Auth;
 
 class EntradaController extends Controller
 {
-    public function comprar(Request $request)
+    public function comprar($localidadId)
     {
-        $request->validate([
-            'localidad_id' => 'required|exists:localidades,id',
-        ]);
+        $localidad = Localidad::findOrFail($localidadId);
 
-        Entrada::create([
-            'user_id' => Auth::id(),
-            'localidad_id' => $request->localidad_id,
-            'estado' => 'comprado',
-            'codigo_qr' => 'QR-' . uniqid(), 
-        ]);
+    if ($localidad->capacidad <= 0) {
+        return back()->with('error', 'No hay más boletos disponibles para esta localidad.');
+        }
+        $entrada = new Entrada();
+        $entrada->user_id = Auth::id();
+        $entrada->localidad_id = $localidad->id;
+        $entrada->estado = 'comprado';
+        $entrada->save();
+        $localidad->capacidad -= 1;
+        $localidad->save();
 
-        return redirect()->back()->with('success', 'Entrada comprada exitosamente.');
+    return back()->with('success', 'Entrada comprada exitosamente.');
+    
     }
+    public function misEntradas()
+{
+    $entradas = Entrada::with('localidad.evento')
+        ->where('user_id', Auth::id())
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+    return view('entradas.mis', compact('entradas'));
+}
+    public function reembolsar($id)
+{
+    $entrada = Entrada::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
+    $entrada->estado = 'reembolsado';
+    $entrada->save();
+
+    return redirect()->back()->with('success', 'Entrada reembolsada exitosamente.');
+}
     /**
      * Display a listing of the resource.
      *
