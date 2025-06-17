@@ -22,7 +22,7 @@ Route::get('/eventos/{id}', [EventoController::class, 'show'])->name('eventos.sh
 
 Route::middleware('auth')->group(function () {
     Route::get('/mis-entradas', [EntradaController::class, 'misEntradas'])->name('entradas.mis');
-    Route::post('/entradas/comprar', [EntradaController::class, 'comprar'])->name('entradas.comprar');
+    Route::post('/entradas/comprar/{localidad}', [EntradaController::class, 'comprar'])->name('entradas.comprar');
     Route::post('/entradas/reembolsar/{id}', [EntradaController::class, 'reembolsar'])->name('entradas.reembolsar');
     Route::post('/comprar-entrada/{localidad}', [EntradaController::class, 'comprar'])->name('entradas.comprar.directa');
     Route::post('/reembolsar-entrada/{id}', [EntradaController::class, 'reembolsar'])->name('entradas.reembolsar.directa');
@@ -37,4 +37,13 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::get('eventos/{evento}/localidades', [LocalidadController::class, 'porEvento'])->name('admin.eventos.localidades');
     Route::get('admin/localidades/evento/{eventoId}', [LocalidadController::class, 'porEvento'])->name('admin.localidades.por_evento');
 });
+
+use App\Http\Controllers\CompraController;
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/eventos-disponibles', [CompraController::class, 'index'])->name('compras.index');
+    Route::post('/comprar/{localidad}', [CompraController::class, 'comprar'])->name('compras.comprar');
+    Route::get('/mis-eventos', [CompraController::class, 'misEventos'])->name('compras.mis_eventos');
+});
+
 

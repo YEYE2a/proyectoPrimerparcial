@@ -15,10 +15,6 @@
         <a href="{{ route('admin.eventos.create') }}" class="btn btn-primary">+ Crear Evento</a>
     </div>
 
-    @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
-
     <table class="table table-bordered align-middle">
         <thead class="table-light">
             <tr>
@@ -39,9 +35,14 @@
                             <strong>{{ $localidad->nombre }}</strong> - {{ $localidad->capacidad }} totales
                             <br>
                             <span class="text-success">{{ $localidad->entradas->where('estado', 'comprado')->count() }} compradas</span> /
-                            <span class="text-muted">{{ $localidad->capacidad - $localidad->entradas->where('estado', 'comprado')->count() }} disponibles</span>
+                            <span class="text-muted">
+                                {{ $localidad->capacidad - $localidad->entradas->where('estado', 'comprado')->count() }} disponibles
+                            </span>
                             @foreach($localidad->entradas->where('estado', 'comprado') as $entrada)
-                                <br><small>- Comprado por: {{ $entrada->user->name }}</small>
+                                <br>
+                                <small>- Comprado por:
+                                    {{ $entrada->usuario ? $entrada->usuario->name : 'Usuario eliminado' }}
+                                </small>
                             @endforeach
                         </div>
                     @endforeach
@@ -61,4 +62,3 @@
     </table>
 </div>
 @endsection
-

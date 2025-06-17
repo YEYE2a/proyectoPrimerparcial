@@ -36,6 +36,18 @@
             <input type="time" name="hora" id="hora" class="form-control" value="{{ old('hora', $evento->hora) }}" required>
         </div>
 
+        <div class="mb-3">
+            <label for="lugar" class="form-label">Lugar</label>
+            <input type="text" class="form-control" id="lugar" name="lugar" value="{{ old('lugar', $evento->lugar) }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="imagen_url" class="form-label">URL de la imagen del evento</label>
+            <input type="url" class="form-control" id="imagen_url" name="imagen_url"
+                   placeholder="https://..."
+                   value="{{ old('imagen_url', $evento->imagen_url) }}">
+        </div>
+
         <button type="submit" class="btn btn-primary">Actualizar</button>
         <a href="{{ route('admin.eventos.index') }}" class="btn btn-secondary">Cancelar</a>
     </form>

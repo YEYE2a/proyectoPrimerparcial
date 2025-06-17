@@ -19,7 +19,6 @@
                                         {{ ucfirst($entrada->estado) }}
                                     </span>
                                 </div>
-                                
                                 @if($entrada->estado === 'comprado')
                                     <form action="{{ route('entradas.reembolsar', $entrada->id) }}" method="POST" class="ms-2">
                                         @csrf
@@ -60,13 +59,24 @@
         <div class="card-header bg-info text-white">Boletos Disponibles</div>
         <div class="card-body">
             @foreach($todosEventos as $evento)
-                <div class="mb-3">
-                    <h5>{{ $evento->nombre }}</h5>
-                    <p>{{ Str::limit($evento->descripcion, 100) }}</p>
-                    <p><strong>{{ $evento->localidades->sum('capacidad') }}</strong> boletos disponibles</p>
-                    <a href="{{ route('eventos.show', $evento->id) }}" class="btn btn-outline-primary btn-sm">Ver Evento</a>
+            <div class="card mb-4 shadow-sm">
+                <div class="row g-0">
+                    <div class="col-md-4 d-flex">
+                        <img src="{{ $evento->imagen_url ?: 'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?fm=jpg&q=60&w=3000' }}"
+                             class="img-fluid rounded-start"
+                             alt="Evento"
+                             style="width: 100%; object-fit: cover; height: 100%;">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5>{{ $evento->nombre }}</h5>
+                            <p>{{ Str::limit($evento->descripcion, 100) }}</p>
+                            <p><strong>{{ $evento->localidades->sum('capacidad') }}</strong> boletos disponibles</p>
+                            <a href="{{ route('eventos.show', $evento->id) }}" class="btn btn-outline-primary btn-sm">Ver Evento</a>
+                        </div>
+                    </div>
                 </div>
-                <hr>
+            </div>
             @endforeach
         </div>
     </div>

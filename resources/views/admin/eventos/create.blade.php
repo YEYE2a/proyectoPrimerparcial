@@ -50,6 +50,12 @@
             <input type="text" class="form-control" id="lugar" name="lugar" required>
         </div>
 
+                <div class="mb-3">
+            <label for="imagen_url" class="form-label">URL de la imagen del evento</label>
+            <input type="url" class="form-control" id="imagen_url" name="imagen_url" placeholder="https://...">
+        </div>
+
+
         <button type="submit" class="btn btn-primary">Guardar Evento</button>
         <a href="{{ route('admin.index') }}" class="btn btn-secondary">Cancelar</a>
     </form>
