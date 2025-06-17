@@ -3,6 +3,10 @@
 Este proyecto es un sistema web para la gestión y compra de entradas a conciertos, desarrollado con Laravel 10 y Bootstrap 5. Ofrece funcionalidades tanto para usuarios como para administradores, incluyendo panel de control, compras, reembolsos y gestión de eventos.
 
 ---
+## Grupo formado por:
+- Yan Portero
+- Gerardo Ordoñez
+- Pedro Jalil
 
 ## 🚀 Características principales
 
