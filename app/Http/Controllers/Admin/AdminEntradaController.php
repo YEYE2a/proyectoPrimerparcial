@@ -8,7 +8,7 @@ use App\Models\Entrada;
 
 class AdminEntradaController extends Controller
 {
-    // Mostrar todas las entradas compradas
+
     public function index()
     {
         $entradas = Entrada::with(['usuario', 'localidad.evento'])->latest()->get();
@@ -16,7 +16,7 @@ class AdminEntradaController extends Controller
         return view('admin.entradas.index', compact('entradas'));
     }
 
-    // Eliminar una entrada (simulación de reembolso)
+
     public function destroy($id)
     {
         $entrada = Entrada::findOrFail($id);

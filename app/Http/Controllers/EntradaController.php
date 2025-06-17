@@ -41,7 +41,7 @@ class EntradaController extends Controller
     $entrada = Entrada::findOrFail($id);
 
     if ($entrada->user_id != Auth::id()) {
-        abort(403); // No autorizado
+        abort(403);
     }
 
     if ($entrada->estado === 'reembolsado') {
@@ -51,7 +51,7 @@ class EntradaController extends Controller
     $entrada->estado = 'reembolsado';
     $entrada->save();
 
-    // Liberar cupo en la localidad
+
     $entrada->localidad->increment('capacidad');
 
     return back()->with('success', 'Entrada reembolsada exitosamente.');
