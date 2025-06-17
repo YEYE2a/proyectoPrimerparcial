@@ -18,12 +18,13 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-            <a class="navbar-brand d-flex align-items-center" href="{{ url('/') }}" title="Ir al inicio">
+            <a class="navbar-brand d-flex align-items-center" href="{{ url('/home') }}" title="Ir al inicio">
                 <img src="{{ asset('images/logo.png') }}" 
                     alt="MYTICKET Logo"
                     style="height: 60px; max-width: 180px; object-fit: contain; transition: transform 0.2s ease-in-out;"
@@ -40,8 +41,18 @@
                     <ul class="navbar-nav me-auto">
                     @auth
                     <li class="nav-item">
+                        <a class="nav-link" href="{{ route('eventos.index') }}">Eventos</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ route('entradas.mis') }}">Mis Entradas</a>
                     </li>
+                    @endauth
+                    @auth
+                        @if(Auth::user()->is_admin)
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('admin.index') }}">Panel Admin</a>
+                            </li>
+                        @endif
                     @endauth
                     </ul>
 
@@ -88,5 +99,24 @@
             @yield('content')
         </main>
     </div>
+    <script>
+        @if(session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: '¡Éxito!',
+                text: '{{ session('success') }}',
+                confirmButtonColor: '#198754'
+            });
+        @endif
+
+        @if(session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: '¡Error!',
+                text: '{{ session('error') }}',
+                confirmButtonColor: '#dc3545'
+            });
+        @endif
+    </script>
 </body>
 </html>

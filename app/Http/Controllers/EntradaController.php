@@ -38,11 +38,23 @@ class EntradaController extends Controller
 }
     public function reembolsar($id)
 {
-    $entrada = Entrada::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
+    $entrada = Entrada::findOrFail($id);
+
+    if ($entrada->user_id != Auth::id()) {
+        abort(403); // No autorizado
+    }
+
+    if ($entrada->estado === 'reembolsado') {
+        return back()->with('error', 'Esta entrada ya fue reembolsada.');
+    }
+
     $entrada->estado = 'reembolsado';
     $entrada->save();
 
-    return redirect()->back()->with('success', 'Entrada reembolsada exitosamente.');
+    // Liberar cupo en la localidad
+    $entrada->localidad->increment('capacidad');
+
+    return back()->with('success', 'Entrada reembolsada exitosamente.');
 }
     /**
      * Display a listing of the resource.

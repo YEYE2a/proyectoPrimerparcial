@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+
 class Entrada extends Model
 {
     use HasFactory;
@@ -20,4 +21,9 @@ class Entrada extends Model
     {
         return $this->belongsTo(Localidad::class);
     }
+    public function puedeReembolsar()
+    {
+        return $this->estado === 'comprado' && $this->user_id === Auth::id();
+    }
 }
+
